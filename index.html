@@ -1,0 +1,585 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Stefan Nieke - Kolloquium</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/night.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+
+				<section data-transition="convex">
+					<small>Kolloquium</small>
+					<p>Entwicklung eines D3.js Plugins</p>
+					<p>für dreidimensionale Visualisierungen</p>
+					<br>
+					<small> <b> Stefan Nieke </b> </small>
+
+
+					<aside class="notes">
+						Begrüßung
+					</aside>
+
+				</section>
+
+				<section data-transition="convex">
+					<h2>Inhaltverzeichnis</h2>
+					<ul>
+						<li class="fragment visible">Datenvisualisierung</li>
+						<li class="fragment visible">D3.js</li>
+						<li class="fragment visible">Probleme</li>
+						<li class="fragment visible">Lösungen + Beispiele</li>
+						<li class="fragment visible">Fazit</li>
+					</ul>
+					<aside class="notes">
+						Inhaltverzeichnis <br>
+						Datenvisualisierung<br>
+						D3.js<br>
+						Probleme<br>
+						Lösungen + Beispiele<br>
+						Fazit<br>
+					</aside>
+				</section>
+
+				<section data-transition="convex">
+					<caption>Anscombe's quartett</caption> <br> <br>
+					<table style="font-size: 0.5em">
+						<tr> <th align="center" colspan="2">I</th><th align="center" colspan="2">II</th><th align="center" colspan="2">III</th><th align="center" colspan="2">IV</th> </tr>
+						<tr> <td align="center">x</td><td align="center">y</td><td align="center">x</td><td align="center">y</td><td align="center">x</td><td align="center">y</td><td align="center">x</td><td align="center">y</td></tr> <tr> <td align="center">10,0</td> <td align="center">8,04</td> <td align="center">10,0</td> <td align="center">9,14</td> <td align="center">10,0</td> <td align="center">7,46</td> <td align="center">8,0</td> <td align="center">6,58</td> </tr>
+						<tr> <td align="center">8,0</td> <td align="center">6,95</td> <td align="center">8,0</td> <td align="center">8,14</td> <td align="center">8,0</td> <td align="center">6,77</td> <td align="center">8,0</td> <td align="center">5,76</td> </tr>
+						<tr> <td align="center">13,0</td> <td align="center">7,58</td> <td align="center">13,0</td> <td align="center">8,74</td> <td align="center">13,0</td> <td align="center">12,74</td> <td align="center">8,0</td> <td align="center">7,71</td> </tr>
+						<tr> <td align="center">9,0</td> <td align="center">8,81</td> <td align="center">9,0</td> <td align="center">8,77</td> <td align="center">9,0</td> <td align="center">7,11</td> <td align="center">8,0</td> <td align="center">8,84</td> </tr>
+						<tr> <td align="center">11,0</td> <td align="center">8,33</td> <td align="center">11,0</td> <td align="center">9,26</td> <td align="center">11,0</td> <td align="center">7,81</td> <td align="center">8,0</td> <td align="center">8,47</td> </tr>
+						<tr> <td align="center">14,0</td> <td align="center">9,96</td> <td align="center">14,0</td> <td align="center">8,10</td> <td align="center">14,0</td> <td align="center">8,84</td> <td align="center">8,0</td> <td align="center">7,04</td> </tr>
+						<tr> <td align="center">6,0</td> <td align="center">7,24</td> <td align="center">6,0</td> <td align="center">6,13</td> <td align="center">6,0</td> <td align="center">6,08</td> <td align="center">8,0</td> <td align="center">5,25</td> </tr>
+						<tr> <td align="center">4,0</td> <td align="center">4,26</td> <td align="center">4,0</td> <td align="center">3,10</td> <td align="center">4,0</td> <td align="center">5,39</td> <td align="center">19,0</td> <td align="center">12,50</td> </tr>
+						<tr> <td align="center">12,0</td> <td align="center">10,84</td> <td align="center">12,0</td> <td align="center">9,13</td> <td align="center">12,0</td> <td align="center">8,15</td> <td align="center">8,0</td> <td align="center">5,56</td> </tr>
+						<tr> <td align="center">7,0</td> <td align="center">4,82</td> <td align="center">7,0</td> <td align="center">7,26</td> <td align="center">7,0</td> <td align="center">6,42</td> <td align="center">8,0</td> <td align="center">7,91</td> </tr>
+						<tr> <td align="center">5,0</td> <td align="center">5,68</td> <td align="center">5,0</td> <td align="center">4,74</td> <td align="center">5,0</td> <td align="center">5,73</td> <td align="center">8,0</td> <td align="center">6,89</td> </tr>
+					</table>
+					<aside class="notes">
+						bei der visualisierung begnet man oft das hier: eine tabelle, eine tabelle ist auch gut aber sie ist schwer zu interpretieren. die vier mengen haben nahezu die gleichen statistischen eigenschaften (u.a. varianze und mittelwert)
+					</aside>
+				</section>
+
+				<section data-transition="convex">
+					<img src="img/ascombe.png" style="background: white;border-color:white">
+					<p style="font-size: 0.45em;font-family: monospace,serif;">
+						<small>Quelle: https://commons.wikimedia.org/wiki/File:Anscombe%27s_quartet_3.svg#/media/File:Anscombe%27s_quartet_3.svg</small>
+					</p>
+					<aside class="notes">
+						Wenn man sich die visuelle Repräsentation der vier Mengen anschaut,
+						stellt man fest, dass sie doch nicht mehr so viele Ähnlichkeiten aufweisen.
+						-> Analyse von Daten ohne visuelle Repräsentation ist sehr schwer und für manche sogar undenkbar
+					</aside>
+				</section>
+
+				<section data-transition="convex">
+					<p>
+						In einer 3D-Welt muss man auch 3D-Daten visualisieren können
+					</p>
+					<aside class="notes">
+						Man könnte sich fragen, warum man überhaupt 3D-daten visualiesieren möchte. Die Antwort liegt auf der Hand
+					</aside>
+				</section>
+
+				<section data-transition="convex">
+					<h1>D3.js</h1>
+					<aside class="notes">
+						Wie könnte man jetzt die Visualisierung von 3D-Daten vornehmen ?
+					</aside>
+				</section>
+
+				<section data-transition="convex">
+					<p>
+						populärste quelloffene JS-Bibliothek zum Visualisieren von Daten
+					</p>
+					<aside class="notes">
+						D3 ist nicht nur die populärste quelloffene JS-Bibliothek zum Visualisieren von Daten sondern
+						auch eine ganz spezielle denn D3 ist keine Drag und Drop Bibliothek. Vielmehr liefert D3 die
+						nötigen Bausteine aus. Beisteine ? V4 etc...
+					</aside>
+				</section>
+
+				<section data-transition="convex">
+					<ul>
+						<li class="fragment grow">Enter</li>
+						<li class="fragment grow">Update</li>
+						<li class="fragment grow">Exit</li>
+					</ul>
+					<aside class="notes">
+						Was ist ist Besonders ist, ist das Enter, update, exit Muster,
+						das D3 so besonders macht...denn
+					</aside>
+				</section>
+
+				<section data-transition="convex">
+					<img src="img/barchart.gif" class="plain">
+					<aside class="notes">
+						Natürliche Animationen
+					</aside>
+				</section>
+
+				<section data-transition="convex">
+					<h1>Probleme</h1>
+					<aside class="notes">
+						Gab es überhaupt Probleme ?
+					</aside>
+				</section>
+
+				<section data-transition="convex">
+					<h3>Browser</h3>
+					<ul>
+						<li class="fragment grow">Koordinaten-System</li>
+					</ul>
+					<aside class="notes">
+						Das Koordinaten System im Browser ist ein linkshändiges
+						Koordinaten-System mit nach unten zeigender y-Achse.
+						<b>Punkt 0,0 ist links oben</b>
+						Bedeutet, dass alle Berechnung darauf rücksicht nehmen müssen..
+					</aside>
+				</section>
+
+
+				<section data-transition="convex">
+					<h3>SVG</h3>
+					<ul>
+						<li class="fragment grow">nicht 3D-freundlich</li>
+						<li class="fragment grow">keine 3D-CSS Funktionen</li>
+					</ul>
+					<aside class="notes">
+						Super wäre es wenn man SVG ein 3D-Cube-Element hätte...
+					</aside>
+				</section>
+
+				<section data-transition="convex">
+					<h3>Javascript</h3>
+					<ul>
+						<li class="fragment grow">3D zu 2D Umwandlung</li>
+					</ul>
+					<aside class="notes">
+						noch toller wäre es wenn Javascript eine Funktionen bereitstellen würde, um 3D-Punkte auf eine 2D-Fläche zu projizieren..
+					</aside>
+				</section>
+
+				<section data-transition="convex">
+					<h3>Kontext von D3.js</h3>
+					<ul>
+						<li class="fragment grow">Method Chaining</li>
+					</ul>
+					<aside class="notes">
+						Das ganze muss natürlich in den Kontext von D3.js umgesetzt werden <br>
+						nichts einfach blind umsetzen...
+					</aside>
+				</section>
+
+				<section data-transition="convex">
+					<h1>Lösung</h1>
+					<ul>
+						<li class="fragment visible">3D Objekte mit SVG</li>
+						<li class="fragment visible">3D Transformation</li>
+						<li class="fragment visible">3D Projektion</li>
+						<li class="fragment visible">...im Kontext von D3.js</li>
+					</ul>
+					<aside class="notes">
+						3D-Objekte mit SVG umsetzen (path element und g element erwähnen) <br>
+						man implementiert 3D Transformation <br>
+						man implmentiert eine FUnktionen um aus 3d daten 2d zu machen <br>
+						das ganze an den richtlinien von d3.js
+					</aside>
+				</section>
+
+				<section data-transition="convex">
+					<p>3D Transformation mittels Rotationsmatrizen</p>
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="300px" style="vertical-align: -4.005ex;" viewBox="0 -2226.5 13727.6 3950.7" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<path stroke-width="10" id="E1-MJMATHI-52" d="M230 637Q203 637 198 638T193 649Q193 676 204 682Q206 683 378 683Q550 682 564 680Q620 672 658 652T712 606T733 563T739 529Q739 484 710 445T643 385T576 351T538 338L545 333Q612 295 612 223Q612 212 607 162T602 80V71Q602 53 603 43T614 25T640 16Q668 16 686 38T712 85Q717 99 720 102T735 105Q755 105 755 93Q755 75 731 36Q693 -21 641 -21H632Q571 -21 531 4T487 82Q487 109 502 166T517 239Q517 290 474 313Q459 320 449 321T378 323H309L277 193Q244 61 244 59Q244 55 245 54T252 50T269 48T302 46H333Q339 38 339 37T336 19Q332 6 326 0H311Q275 2 180 2Q146 2 117 2T71 2T50 1Q33 1 33 10Q33 12 36 24Q41 43 46 45Q50 46 61 46H67Q94 46 127 49Q141 52 146 61Q149 65 218 339T287 628Q287 635 230 637ZM630 554Q630 586 609 608T523 636Q521 636 500 636T462 637H440Q393 637 386 627Q385 624 352 494T319 361Q319 360 388 360Q466 361 492 367Q556 377 592 426Q608 449 619 486T630 554Z"></path>
+<path stroke-width="10" id="E1-MJMATHI-7A" d="M347 338Q337 338 294 349T231 360Q211 360 197 356T174 346T162 335T155 324L153 320Q150 317 138 317Q117 317 117 325Q117 330 120 339Q133 378 163 406T229 440Q241 442 246 442Q271 442 291 425T329 392T367 375Q389 375 411 408T434 441Q435 442 449 442H462Q468 436 468 434Q468 430 463 420T449 399T432 377T418 358L411 349Q368 298 275 214T160 106L148 94L163 93Q185 93 227 82T290 71Q328 71 360 90T402 140Q406 149 409 151T424 153Q443 153 443 143Q443 138 442 134Q425 72 376 31T278 -11Q252 -11 232 6T193 40T155 57Q111 57 76 -3Q70 -11 59 -11H54H41Q35 -5 35 -2Q35 13 93 84Q132 129 225 214T340 322Q352 338 347 338Z"></path>
+<path stroke-width="10" id="E1-MJMAIN-28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path>
+<path stroke-width="10" id="E1-MJMATHI-3B1" d="M34 156Q34 270 120 356T309 442Q379 442 421 402T478 304Q484 275 485 237V208Q534 282 560 374Q564 388 566 390T582 393Q603 393 603 385Q603 376 594 346T558 261T497 161L486 147L487 123Q489 67 495 47T514 26Q528 28 540 37T557 60Q559 67 562 68T577 70Q597 70 597 62Q597 56 591 43Q579 19 556 5T512 -10H505Q438 -10 414 62L411 69L400 61Q390 53 370 41T325 18T267 -2T203 -11Q124 -11 79 39T34 156ZM208 26Q257 26 306 47T379 90L403 112Q401 255 396 290Q382 405 304 405Q235 405 183 332Q156 292 139 224T121 120Q121 71 146 49T208 26Z"></path>
+<path stroke-width="10" id="E1-MJMAIN-29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path>
+<path stroke-width="10" id="E1-MJMAIN-3D" d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z"></path>
+<path stroke-width="10" id="E1-MJMAIN-63" d="M370 305T349 305T313 320T297 358Q297 381 312 396Q317 401 317 402T307 404Q281 408 258 408Q209 408 178 376Q131 329 131 219Q131 137 162 90Q203 29 272 29Q313 29 338 55T374 117Q376 125 379 127T395 129H409Q415 123 415 120Q415 116 411 104T395 71T366 33T318 2T249 -11Q163 -11 99 53T34 214Q34 318 99 383T250 448T370 421T404 357Q404 334 387 320Z"></path>
+<path stroke-width="10" id="E1-MJMAIN-6F" d="M28 214Q28 309 93 378T250 448Q340 448 405 380T471 215Q471 120 407 55T250 -10Q153 -10 91 57T28 214ZM250 30Q372 30 372 193V225V250Q372 272 371 288T364 326T348 362T317 390T268 410Q263 411 252 411Q222 411 195 399Q152 377 139 338T126 246V226Q126 130 145 91Q177 30 250 30Z"></path>
+<path stroke-width="10" id="E1-MJMAIN-73" d="M295 316Q295 356 268 385T190 414Q154 414 128 401Q98 382 98 349Q97 344 98 336T114 312T157 287Q175 282 201 278T245 269T277 256Q294 248 310 236T342 195T359 133Q359 71 321 31T198 -10H190Q138 -10 94 26L86 19L77 10Q71 4 65 -1L54 -11H46H42Q39 -11 33 -5V74V132Q33 153 35 157T45 162H54Q66 162 70 158T75 146T82 119T101 77Q136 26 198 26Q295 26 295 104Q295 133 277 151Q257 175 194 187T111 210Q75 227 54 256T33 318Q33 357 50 384T93 424T143 442T187 447H198Q238 447 268 432L283 424L292 431Q302 440 314 448H322H326Q329 448 335 442V310L329 304H301Q295 310 295 316Z"></path>
+<path stroke-width="10" id="E1-MJMAIN-2212" d="M84 237T84 250T98 270H679Q694 262 694 250T679 230H98Q84 237 84 250Z"></path>
+<path stroke-width="10" id="E1-MJMAIN-69" d="M69 609Q69 637 87 653T131 669Q154 667 171 652T188 609Q188 579 171 564T129 549Q104 549 87 564T69 609ZM247 0Q232 3 143 3Q132 3 106 3T56 1L34 0H26V46H42Q70 46 91 49Q100 53 102 60T104 102V205V293Q104 345 102 359T88 378Q74 385 41 385H30V408Q30 431 32 431L42 432Q52 433 70 434T106 436Q123 437 142 438T171 441T182 442H185V62Q190 52 197 50T232 46H255V0H247Z"></path>
+<path stroke-width="10" id="E1-MJMAIN-6E" d="M41 46H55Q94 46 102 60V68Q102 77 102 91T102 122T103 161T103 203Q103 234 103 269T102 328V351Q99 370 88 376T43 385H25V408Q25 431 27 431L37 432Q47 433 65 434T102 436Q119 437 138 438T167 441T178 442H181V402Q181 364 182 364T187 369T199 384T218 402T247 421T285 437Q305 442 336 442Q450 438 463 329Q464 322 464 190V104Q464 66 466 59T477 49Q498 46 526 46H542V0H534L510 1Q487 2 460 2T422 3Q319 3 310 0H302V46H318Q379 46 379 62Q380 64 380 200Q379 335 378 343Q372 371 358 385T334 402T308 404Q263 404 229 370Q202 343 195 315T187 232V168V108Q187 78 188 68T191 55T200 49Q221 46 249 46H265V0H257L234 1Q210 2 183 2T145 3Q42 3 33 0H25V46H41Z"></path>
+<path stroke-width="10" id="E1-MJMAIN-30" d="M96 585Q152 666 249 666Q297 666 345 640T423 548Q460 465 460 320Q460 165 417 83Q397 41 362 16T301 -15T250 -22Q224 -22 198 -16T137 16T82 83Q39 165 39 320Q39 494 96 585ZM321 597Q291 629 250 629Q208 629 178 597Q153 571 145 525T137 333Q137 175 145 125T181 46Q209 16 250 16Q290 16 318 46Q347 76 354 130T362 333Q362 478 354 524T321 597Z"></path>
+<path stroke-width="10" id="E1-MJMAIN-31" d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z"></path>
+<path stroke-width="10" id="E1-MJSZ4-239B" d="M837 1154Q843 1148 843 1145Q843 1141 818 1106T753 1002T667 841T574 604T494 299Q417 -84 417 -609Q417 -641 416 -647T411 -654Q409 -655 366 -655Q299 -655 297 -654Q292 -652 292 -643T291 -583Q293 -400 304 -242T347 110T432 470T574 813T785 1136Q787 1139 790 1142T794 1147T796 1150T799 1152T802 1153T807 1154T813 1154H819H837Z"></path>
+<path stroke-width="10" id="E1-MJSZ4-239D" d="M843 -635Q843 -638 837 -644H820Q801 -644 800 -643Q792 -635 785 -626Q684 -503 605 -363T473 -75T385 216T330 518T302 809T291 1093Q291 1144 291 1153T296 1164Q298 1165 366 1165Q409 1165 411 1164Q415 1163 416 1157T417 1119Q417 529 517 109T833 -617Q843 -631 843 -635Z"></path>
+<path stroke-width="10" id="E1-MJSZ4-239C" d="M413 -9Q412 -9 407 -9T388 -10T354 -10Q300 -10 297 -9Q294 -8 293 -5Q291 5 291 127V300Q291 602 292 605L296 609Q298 610 366 610Q382 610 392 610T407 610T412 609Q416 609 416 592T417 473V127Q417 -9 413 -9Z"></path>
+<path stroke-width="10" id="E1-MJSZ4-239E" d="M31 1143Q31 1154 49 1154H59Q72 1154 75 1152T89 1136Q190 1013 269 873T401 585T489 294T544 -8T572 -299T583 -583Q583 -634 583 -643T577 -654Q575 -655 508 -655Q465 -655 463 -654Q459 -653 458 -647T457 -609Q457 -58 371 340T100 1037Q87 1059 61 1098T31 1143Z"></path>
+<path stroke-width="10" id="E1-MJSZ4-23A0" d="M56 -644H50Q31 -644 31 -635Q31 -632 37 -622Q69 -579 100 -527Q286 -228 371 170T457 1119Q457 1161 462 1164Q464 1165 520 1165Q575 1165 577 1164Q582 1162 582 1153T583 1093Q581 910 570 752T527 400T442 40T300 -303T89 -626Q78 -640 75 -642T61 -644H56Z"></path>
+<path stroke-width="10" id="E1-MJSZ4-239F" d="M579 -9Q578 -9 573 -9T554 -10T520 -10Q466 -10 463 -9Q460 -8 459 -5Q457 5 457 127V300Q457 602 458 605L462 609Q464 610 532 610Q548 610 558 610T573 610T578 609Q582 609 582 592T583 473V127Q583 -9 579 -9Z"></path>
+</defs>
+<g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)">
+ <use xlink:href="#E1-MJMATHI-52" x="0" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E1-MJMATHI-7A" x="1080" y="-213"></use>
+ <use xlink:href="#E1-MJMAIN-28" x="1198" y="0"></use>
+ <use xlink:href="#E1-MJMATHI-3B1" x="1592" y="0"></use>
+ <use xlink:href="#E1-MJMAIN-29" x="2237" y="0"></use>
+ <use xlink:href="#E1-MJMAIN-3D" x="2909" y="0"></use>
+<g transform="translate(3970,0)">
+<g transform="translate(0,2150)">
+ <use xlink:href="#E1-MJSZ4-239B" x="0" y="-1165"></use>
+<g transform="translate(0,-2013.104524180967) scale(1,0.37597503900156004)">
+ <use xlink:href="#E1-MJSZ4-239C"></use>
+</g>
+ <use xlink:href="#E1-MJSZ4-239D" x="0" y="-3146"></use>
+</g>
+<g transform="translate(1047,0)">
+<g transform="translate(-11,0)">
+<g transform="translate(0,1350)">
+ <use xlink:href="#E1-MJMAIN-63"></use>
+ <use xlink:href="#E1-MJMAIN-6F" x="449" y="0"></use>
+ <use xlink:href="#E1-MJMAIN-73" x="954" y="0"></use>
+ <use xlink:href="#E1-MJMATHI-3B1" x="1519" y="0"></use>
+</g>
+<g transform="translate(55,-50)">
+ <use xlink:href="#E1-MJMAIN-73"></use>
+ <use xlink:href="#E1-MJMAIN-69" x="399" y="0"></use>
+ <use xlink:href="#E1-MJMAIN-6E" x="682" y="0"></use>
+ <use xlink:href="#E1-MJMATHI-3B1" x="1409" y="0"></use>
+</g>
+ <use xlink:href="#E1-MJMAIN-30" x="829" y="-1450"></use>
+</g>
+<g transform="translate(3154,0)">
+<g transform="translate(0,1350)">
+ <use xlink:href="#E1-MJMAIN-2212" x="0" y="0"></use>
+<g transform="translate(949,0)">
+ <use xlink:href="#E1-MJMAIN-73"></use>
+ <use xlink:href="#E1-MJMAIN-69" x="399" y="0"></use>
+ <use xlink:href="#E1-MJMAIN-6E" x="682" y="0"></use>
+</g>
+ <use xlink:href="#E1-MJMATHI-3B1" x="2359" y="0"></use>
+</g>
+<g transform="translate(419,-50)">
+ <use xlink:href="#E1-MJMAIN-63"></use>
+ <use xlink:href="#E1-MJMAIN-6F" x="449" y="0"></use>
+ <use xlink:href="#E1-MJMAIN-73" x="954" y="0"></use>
+ <use xlink:href="#E1-MJMATHI-3B1" x="1519" y="0"></use>
+</g>
+ <use xlink:href="#E1-MJMAIN-30" x="1249" y="-1450"></use>
+</g>
+<g transform="translate(7158,0)">
+ <use xlink:href="#E1-MJMAIN-30" x="0" y="1350"></use>
+ <use xlink:href="#E1-MJMAIN-30" x="0" y="-50"></use>
+ <use xlink:href="#E1-MJMAIN-31" x="0" y="-1450"></use>
+</g>
+</g>
+<g transform="translate(8877,2150)">
+ <use xlink:href="#E1-MJSZ4-239E" x="0" y="-1164"></use>
+<g transform="translate(0,-2013.0717628705147) scale(1,0.37753510140405616)">
+ <use xlink:href="#E1-MJSZ4-239F"></use>
+</g>
+ <use xlink:href="#E1-MJSZ4-23A0" x="0" y="-3146"></use>
+</g>
+</g>
+</g>
+<br>
+<br>
+</svg>
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="300px" style="vertical-align: -4.005ex;" viewBox="0 -2226.5 13748.1 3950.7" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<path stroke-width="10" id="E1-MJMATHI-52" d="M230 637Q203 637 198 638T193 649Q193 676 204 682Q206 683 378 683Q550 682 564 680Q620 672 658 652T712 606T733 563T739 529Q739 484 710 445T643 385T576 351T538 338L545 333Q612 295 612 223Q612 212 607 162T602 80V71Q602 53 603 43T614 25T640 16Q668 16 686 38T712 85Q717 99 720 102T735 105Q755 105 755 93Q755 75 731 36Q693 -21 641 -21H632Q571 -21 531 4T487 82Q487 109 502 166T517 239Q517 290 474 313Q459 320 449 321T378 323H309L277 193Q244 61 244 59Q244 55 245 54T252 50T269 48T302 46H333Q339 38 339 37T336 19Q332 6 326 0H311Q275 2 180 2Q146 2 117 2T71 2T50 1Q33 1 33 10Q33 12 36 24Q41 43 46 45Q50 46 61 46H67Q94 46 127 49Q141 52 146 61Q149 65 218 339T287 628Q287 635 230 637ZM630 554Q630 586 609 608T523 636Q521 636 500 636T462 637H440Q393 637 386 627Q385 624 352 494T319 361Q319 360 388 360Q466 361 492 367Q556 377 592 426Q608 449 619 486T630 554Z"></path>
+<path stroke-width="10" id="E1-MJMATHI-79" d="M21 287Q21 301 36 335T84 406T158 442Q199 442 224 419T250 355Q248 336 247 334Q247 331 231 288T198 191T182 105Q182 62 196 45T238 27Q261 27 281 38T312 61T339 94Q339 95 344 114T358 173T377 247Q415 397 419 404Q432 431 462 431Q475 431 483 424T494 412T496 403Q496 390 447 193T391 -23Q363 -106 294 -155T156 -205Q111 -205 77 -183T43 -117Q43 -95 50 -80T69 -58T89 -48T106 -45Q150 -45 150 -87Q150 -107 138 -122T115 -142T102 -147L99 -148Q101 -153 118 -160T152 -167H160Q177 -167 186 -165Q219 -156 247 -127T290 -65T313 -9T321 21L315 17Q309 13 296 6T270 -6Q250 -11 231 -11Q185 -11 150 11T104 82Q103 89 103 113Q103 170 138 262T173 379Q173 380 173 381Q173 390 173 393T169 400T158 404H154Q131 404 112 385T82 344T65 302T57 280Q55 278 41 278H27Q21 284 21 287Z"></path>
+<path stroke-width="10" id="E1-MJMAIN-28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path>
+<path stroke-width="10" id="E1-MJMATHI-3B1" d="M34 156Q34 270 120 356T309 442Q379 442 421 402T478 304Q484 275 485 237V208Q534 282 560 374Q564 388 566 390T582 393Q603 393 603 385Q603 376 594 346T558 261T497 161L486 147L487 123Q489 67 495 47T514 26Q528 28 540 37T557 60Q559 67 562 68T577 70Q597 70 597 62Q597 56 591 43Q579 19 556 5T512 -10H505Q438 -10 414 62L411 69L400 61Q390 53 370 41T325 18T267 -2T203 -11Q124 -11 79 39T34 156ZM208 26Q257 26 306 47T379 90L403 112Q401 255 396 290Q382 405 304 405Q235 405 183 332Q156 292 139 224T121 120Q121 71 146 49T208 26Z"></path>
+<path stroke-width="10" id="E1-MJMAIN-29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path>
+<path stroke-width="10" id="E1-MJMAIN-3D" d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z"></path>
+<path stroke-width="10" id="E1-MJMAIN-63" d="M370 305T349 305T313 320T297 358Q297 381 312 396Q317 401 317 402T307 404Q281 408 258 408Q209 408 178 376Q131 329 131 219Q131 137 162 90Q203 29 272 29Q313 29 338 55T374 117Q376 125 379 127T395 129H409Q415 123 415 120Q415 116 411 104T395 71T366 33T318 2T249 -11Q163 -11 99 53T34 214Q34 318 99 383T250 448T370 421T404 357Q404 334 387 320Z"></path>
+<path stroke-width="10" id="E1-MJMAIN-6F" d="M28 214Q28 309 93 378T250 448Q340 448 405 380T471 215Q471 120 407 55T250 -10Q153 -10 91 57T28 214ZM250 30Q372 30 372 193V225V250Q372 272 371 288T364 326T348 362T317 390T268 410Q263 411 252 411Q222 411 195 399Q152 377 139 338T126 246V226Q126 130 145 91Q177 30 250 30Z"></path>
+<path stroke-width="10" id="E1-MJMAIN-73" d="M295 316Q295 356 268 385T190 414Q154 414 128 401Q98 382 98 349Q97 344 98 336T114 312T157 287Q175 282 201 278T245 269T277 256Q294 248 310 236T342 195T359 133Q359 71 321 31T198 -10H190Q138 -10 94 26L86 19L77 10Q71 4 65 -1L54 -11H46H42Q39 -11 33 -5V74V132Q33 153 35 157T45 162H54Q66 162 70 158T75 146T82 119T101 77Q136 26 198 26Q295 26 295 104Q295 133 277 151Q257 175 194 187T111 210Q75 227 54 256T33 318Q33 357 50 384T93 424T143 442T187 447H198Q238 447 268 432L283 424L292 431Q302 440 314 448H322H326Q329 448 335 442V310L329 304H301Q295 310 295 316Z"></path>
+<path stroke-width="10" id="E1-MJMAIN-30" d="M96 585Q152 666 249 666Q297 666 345 640T423 548Q460 465 460 320Q460 165 417 83Q397 41 362 16T301 -15T250 -22Q224 -22 198 -16T137 16T82 83Q39 165 39 320Q39 494 96 585ZM321 597Q291 629 250 629Q208 629 178 597Q153 571 145 525T137 333Q137 175 145 125T181 46Q209 16 250 16Q290 16 318 46Q347 76 354 130T362 333Q362 478 354 524T321 597Z"></path>
+<path stroke-width="10" id="E1-MJMAIN-69" d="M69 609Q69 637 87 653T131 669Q154 667 171 652T188 609Q188 579 171 564T129 549Q104 549 87 564T69 609ZM247 0Q232 3 143 3Q132 3 106 3T56 1L34 0H26V46H42Q70 46 91 49Q100 53 102 60T104 102V205V293Q104 345 102 359T88 378Q74 385 41 385H30V408Q30 431 32 431L42 432Q52 433 70 434T106 436Q123 437 142 438T171 441T182 442H185V62Q190 52 197 50T232 46H255V0H247Z"></path>
+<path stroke-width="10" id="E1-MJMAIN-6E" d="M41 46H55Q94 46 102 60V68Q102 77 102 91T102 122T103 161T103 203Q103 234 103 269T102 328V351Q99 370 88 376T43 385H25V408Q25 431 27 431L37 432Q47 433 65 434T102 436Q119 437 138 438T167 441T178 442H181V402Q181 364 182 364T187 369T199 384T218 402T247 421T285 437Q305 442 336 442Q450 438 463 329Q464 322 464 190V104Q464 66 466 59T477 49Q498 46 526 46H542V0H534L510 1Q487 2 460 2T422 3Q319 3 310 0H302V46H318Q379 46 379 62Q380 64 380 200Q379 335 378 343Q372 371 358 385T334 402T308 404Q263 404 229 370Q202 343 195 315T187 232V168V108Q187 78 188 68T191 55T200 49Q221 46 249 46H265V0H257L234 1Q210 2 183 2T145 3Q42 3 33 0H25V46H41Z"></path>
+<path stroke-width="10" id="E1-MJMAIN-31" d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z"></path>
+<path stroke-width="10" id="E1-MJMAIN-2212" d="M84 237T84 250T98 270H679Q694 262 694 250T679 230H98Q84 237 84 250Z"></path>
+<path stroke-width="10" id="E1-MJSZ4-239B" d="M837 1154Q843 1148 843 1145Q843 1141 818 1106T753 1002T667 841T574 604T494 299Q417 -84 417 -609Q417 -641 416 -647T411 -654Q409 -655 366 -655Q299 -655 297 -654Q292 -652 292 -643T291 -583Q293 -400 304 -242T347 110T432 470T574 813T785 1136Q787 1139 790 1142T794 1147T796 1150T799 1152T802 1153T807 1154T813 1154H819H837Z"></path>
+<path stroke-width="10" id="E1-MJSZ4-239D" d="M843 -635Q843 -638 837 -644H820Q801 -644 800 -643Q792 -635 785 -626Q684 -503 605 -363T473 -75T385 216T330 518T302 809T291 1093Q291 1144 291 1153T296 1164Q298 1165 366 1165Q409 1165 411 1164Q415 1163 416 1157T417 1119Q417 529 517 109T833 -617Q843 -631 843 -635Z"></path>
+<path stroke-width="10" id="E1-MJSZ4-239C" d="M413 -9Q412 -9 407 -9T388 -10T354 -10Q300 -10 297 -9Q294 -8 293 -5Q291 5 291 127V300Q291 602 292 605L296 609Q298 610 366 610Q382 610 392 610T407 610T412 609Q416 609 416 592T417 473V127Q417 -9 413 -9Z"></path>
+<path stroke-width="10" id="E1-MJSZ4-239E" d="M31 1143Q31 1154 49 1154H59Q72 1154 75 1152T89 1136Q190 1013 269 873T401 585T489 294T544 -8T572 -299T583 -583Q583 -634 583 -643T577 -654Q575 -655 508 -655Q465 -655 463 -654Q459 -653 458 -647T457 -609Q457 -58 371 340T100 1037Q87 1059 61 1098T31 1143Z"></path>
+<path stroke-width="10" id="E1-MJSZ4-23A0" d="M56 -644H50Q31 -644 31 -635Q31 -632 37 -622Q69 -579 100 -527Q286 -228 371 170T457 1119Q457 1161 462 1164Q464 1165 520 1165Q575 1165 577 1164Q582 1162 582 1153T583 1093Q581 910 570 752T527 400T442 40T300 -303T89 -626Q78 -640 75 -642T61 -644H56Z"></path>
+<path stroke-width="10" id="E1-MJSZ4-239F" d="M579 -9Q578 -9 573 -9T554 -10T520 -10Q466 -10 463 -9Q460 -8 459 -5Q457 5 457 127V300Q457 602 458 605L462 609Q464 610 532 610Q548 610 558 610T573 610T578 609Q582 609 582 592T583 473V127Q583 -9 579 -9Z"></path>
+</defs>
+<g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)">
+ <use xlink:href="#E1-MJMATHI-52" x="0" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E1-MJMATHI-79" x="1080" y="-213"></use>
+ <use xlink:href="#E1-MJMAIN-28" x="1218" y="0"></use>
+ <use xlink:href="#E1-MJMATHI-3B1" x="1612" y="0"></use>
+ <use xlink:href="#E1-MJMAIN-29" x="2257" y="0"></use>
+ <use xlink:href="#E1-MJMAIN-3D" x="2929" y="0"></use>
+<g transform="translate(3990,0)">
+<g transform="translate(0,2150)">
+ <use xlink:href="#E1-MJSZ4-239B" x="0" y="-1165"></use>
+<g transform="translate(0,-2013.104524180967) scale(1,0.37597503900156004)">
+ <use xlink:href="#E1-MJSZ4-239C"></use>
+</g>
+ <use xlink:href="#E1-MJSZ4-239D" x="0" y="-3146"></use>
+</g>
+<g transform="translate(1047,0)">
+<g transform="translate(-11,0)">
+<g transform="translate(419,1350)">
+ <use xlink:href="#E1-MJMAIN-63"></use>
+ <use xlink:href="#E1-MJMAIN-6F" x="449" y="0"></use>
+ <use xlink:href="#E1-MJMAIN-73" x="954" y="0"></use>
+ <use xlink:href="#E1-MJMATHI-3B1" x="1519" y="0"></use>
+</g>
+ <use xlink:href="#E1-MJMAIN-30" x="1249" y="-50"></use>
+<g transform="translate(0,-1450)">
+ <use xlink:href="#E1-MJMAIN-2212" x="0" y="0"></use>
+<g transform="translate(949,0)">
+ <use xlink:href="#E1-MJMAIN-73"></use>
+ <use xlink:href="#E1-MJMAIN-69" x="399" y="0"></use>
+ <use xlink:href="#E1-MJMAIN-6E" x="682" y="0"></use>
+</g>
+ <use xlink:href="#E1-MJMATHI-3B1" x="2359" y="0"></use>
+</g>
+</g>
+<g transform="translate(3993,0)">
+ <use xlink:href="#E1-MJMAIN-30" x="0" y="1350"></use>
+ <use xlink:href="#E1-MJMAIN-31" x="0" y="-50"></use>
+ <use xlink:href="#E1-MJMAIN-30" x="0" y="-1450"></use>
+</g>
+<g transform="translate(5498,0)">
+<g transform="translate(55,1350)">
+ <use xlink:href="#E1-MJMAIN-73"></use>
+ <use xlink:href="#E1-MJMAIN-69" x="399" y="0"></use>
+ <use xlink:href="#E1-MJMAIN-6E" x="682" y="0"></use>
+ <use xlink:href="#E1-MJMATHI-3B1" x="1409" y="0"></use>
+</g>
+ <use xlink:href="#E1-MJMAIN-30" x="829" y="-50"></use>
+<g transform="translate(0,-1450)">
+ <use xlink:href="#E1-MJMAIN-63"></use>
+ <use xlink:href="#E1-MJMAIN-6F" x="449" y="0"></use>
+ <use xlink:href="#E1-MJMAIN-73" x="954" y="0"></use>
+ <use xlink:href="#E1-MJMATHI-3B1" x="1519" y="0"></use>
+</g>
+</g>
+</g>
+<g transform="translate(8877,2150)">
+ <use xlink:href="#E1-MJSZ4-239E" x="0" y="-1164"></use>
+<g transform="translate(0,-2013.0717628705147) scale(1,0.37753510140405616)">
+ <use xlink:href="#E1-MJSZ4-239F"></use>
+</g>
+ <use xlink:href="#E1-MJSZ4-23A0" x="0" y="-3146"></use>
+</g>
+</g>
+</g>
+</svg>
+<br>
+<br>
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="300px" style="vertical-align: -4.005ex;" viewBox="0 -2226.5 13801.1 3950.7" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<path stroke-width="10" id="E1-MJMATHI-52" d="M230 637Q203 637 198 638T193 649Q193 676 204 682Q206 683 378 683Q550 682 564 680Q620 672 658 652T712 606T733 563T739 529Q739 484 710 445T643 385T576 351T538 338L545 333Q612 295 612 223Q612 212 607 162T602 80V71Q602 53 603 43T614 25T640 16Q668 16 686 38T712 85Q717 99 720 102T735 105Q755 105 755 93Q755 75 731 36Q693 -21 641 -21H632Q571 -21 531 4T487 82Q487 109 502 166T517 239Q517 290 474 313Q459 320 449 321T378 323H309L277 193Q244 61 244 59Q244 55 245 54T252 50T269 48T302 46H333Q339 38 339 37T336 19Q332 6 326 0H311Q275 2 180 2Q146 2 117 2T71 2T50 1Q33 1 33 10Q33 12 36 24Q41 43 46 45Q50 46 61 46H67Q94 46 127 49Q141 52 146 61Q149 65 218 339T287 628Q287 635 230 637ZM630 554Q630 586 609 608T523 636Q521 636 500 636T462 637H440Q393 637 386 627Q385 624 352 494T319 361Q319 360 388 360Q466 361 492 367Q556 377 592 426Q608 449 619 486T630 554Z"></path>
+<path stroke-width="10" id="E1-MJMATHI-78" d="M52 289Q59 331 106 386T222 442Q257 442 286 424T329 379Q371 442 430 442Q467 442 494 420T522 361Q522 332 508 314T481 292T458 288Q439 288 427 299T415 328Q415 374 465 391Q454 404 425 404Q412 404 406 402Q368 386 350 336Q290 115 290 78Q290 50 306 38T341 26Q378 26 414 59T463 140Q466 150 469 151T485 153H489Q504 153 504 145Q504 144 502 134Q486 77 440 33T333 -11Q263 -11 227 52Q186 -10 133 -10H127Q78 -10 57 16T35 71Q35 103 54 123T99 143Q142 143 142 101Q142 81 130 66T107 46T94 41L91 40Q91 39 97 36T113 29T132 26Q168 26 194 71Q203 87 217 139T245 247T261 313Q266 340 266 352Q266 380 251 392T217 404Q177 404 142 372T93 290Q91 281 88 280T72 278H58Q52 284 52 289Z"></path>
+<path stroke-width="10" id="E1-MJMAIN-28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path>
+<path stroke-width="10" id="E1-MJMATHI-3B1" d="M34 156Q34 270 120 356T309 442Q379 442 421 402T478 304Q484 275 485 237V208Q534 282 560 374Q564 388 566 390T582 393Q603 393 603 385Q603 376 594 346T558 261T497 161L486 147L487 123Q489 67 495 47T514 26Q528 28 540 37T557 60Q559 67 562 68T577 70Q597 70 597 62Q597 56 591 43Q579 19 556 5T512 -10H505Q438 -10 414 62L411 69L400 61Q390 53 370 41T325 18T267 -2T203 -11Q124 -11 79 39T34 156ZM208 26Q257 26 306 47T379 90L403 112Q401 255 396 290Q382 405 304 405Q235 405 183 332Q156 292 139 224T121 120Q121 71 146 49T208 26Z"></path>
+<path stroke-width="10" id="E1-MJMAIN-29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path>
+<path stroke-width="10" id="E1-MJMAIN-3D" d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z"></path>
+<path stroke-width="10" id="E1-MJMAIN-31" d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z"></path>
+<path stroke-width="10" id="E1-MJMAIN-30" d="M96 585Q152 666 249 666Q297 666 345 640T423 548Q460 465 460 320Q460 165 417 83Q397 41 362 16T301 -15T250 -22Q224 -22 198 -16T137 16T82 83Q39 165 39 320Q39 494 96 585ZM321 597Q291 629 250 629Q208 629 178 597Q153 571 145 525T137 333Q137 175 145 125T181 46Q209 16 250 16Q290 16 318 46Q347 76 354 130T362 333Q362 478 354 524T321 597Z"></path>
+<path stroke-width="10" id="E1-MJMAIN-63" d="M370 305T349 305T313 320T297 358Q297 381 312 396Q317 401 317 402T307 404Q281 408 258 408Q209 408 178 376Q131 329 131 219Q131 137 162 90Q203 29 272 29Q313 29 338 55T374 117Q376 125 379 127T395 129H409Q415 123 415 120Q415 116 411 104T395 71T366 33T318 2T249 -11Q163 -11 99 53T34 214Q34 318 99 383T250 448T370 421T404 357Q404 334 387 320Z"></path>
+<path stroke-width="10" id="E1-MJMAIN-6F" d="M28 214Q28 309 93 378T250 448Q340 448 405 380T471 215Q471 120 407 55T250 -10Q153 -10 91 57T28 214ZM250 30Q372 30 372 193V225V250Q372 272 371 288T364 326T348 362T317 390T268 410Q263 411 252 411Q222 411 195 399Q152 377 139 338T126 246V226Q126 130 145 91Q177 30 250 30Z"></path>
+<path stroke-width="10" id="E1-MJMAIN-73" d="M295 316Q295 356 268 385T190 414Q154 414 128 401Q98 382 98 349Q97 344 98 336T114 312T157 287Q175 282 201 278T245 269T277 256Q294 248 310 236T342 195T359 133Q359 71 321 31T198 -10H190Q138 -10 94 26L86 19L77 10Q71 4 65 -1L54 -11H46H42Q39 -11 33 -5V74V132Q33 153 35 157T45 162H54Q66 162 70 158T75 146T82 119T101 77Q136 26 198 26Q295 26 295 104Q295 133 277 151Q257 175 194 187T111 210Q75 227 54 256T33 318Q33 357 50 384T93 424T143 442T187 447H198Q238 447 268 432L283 424L292 431Q302 440 314 448H322H326Q329 448 335 442V310L329 304H301Q295 310 295 316Z"></path>
+<path stroke-width="10" id="E1-MJMAIN-2212" d="M84 237T84 250T98 270H679Q694 262 694 250T679 230H98Q84 237 84 250Z"></path>
+<path stroke-width="10" id="E1-MJMAIN-69" d="M69 609Q69 637 87 653T131 669Q154 667 171 652T188 609Q188 579 171 564T129 549Q104 549 87 564T69 609ZM247 0Q232 3 143 3Q132 3 106 3T56 1L34 0H26V46H42Q70 46 91 49Q100 53 102 60T104 102V205V293Q104 345 102 359T88 378Q74 385 41 385H30V408Q30 431 32 431L42 432Q52 433 70 434T106 436Q123 437 142 438T171 441T182 442H185V62Q190 52 197 50T232 46H255V0H247Z"></path>
+<path stroke-width="10" id="E1-MJMAIN-6E" d="M41 46H55Q94 46 102 60V68Q102 77 102 91T102 122T103 161T103 203Q103 234 103 269T102 328V351Q99 370 88 376T43 385H25V408Q25 431 27 431L37 432Q47 433 65 434T102 436Q119 437 138 438T167 441T178 442H181V402Q181 364 182 364T187 369T199 384T218 402T247 421T285 437Q305 442 336 442Q450 438 463 329Q464 322 464 190V104Q464 66 466 59T477 49Q498 46 526 46H542V0H534L510 1Q487 2 460 2T422 3Q319 3 310 0H302V46H318Q379 46 379 62Q380 64 380 200Q379 335 378 343Q372 371 358 385T334 402T308 404Q263 404 229 370Q202 343 195 315T187 232V168V108Q187 78 188 68T191 55T200 49Q221 46 249 46H265V0H257L234 1Q210 2 183 2T145 3Q42 3 33 0H25V46H41Z"></path>
+<path stroke-width="10" id="E1-MJSZ4-239B" d="M837 1154Q843 1148 843 1145Q843 1141 818 1106T753 1002T667 841T574 604T494 299Q417 -84 417 -609Q417 -641 416 -647T411 -654Q409 -655 366 -655Q299 -655 297 -654Q292 -652 292 -643T291 -583Q293 -400 304 -242T347 110T432 470T574 813T785 1136Q787 1139 790 1142T794 1147T796 1150T799 1152T802 1153T807 1154T813 1154H819H837Z"></path>
+<path stroke-width="10" id="E1-MJSZ4-239D" d="M843 -635Q843 -638 837 -644H820Q801 -644 800 -643Q792 -635 785 -626Q684 -503 605 -363T473 -75T385 216T330 518T302 809T291 1093Q291 1144 291 1153T296 1164Q298 1165 366 1165Q409 1165 411 1164Q415 1163 416 1157T417 1119Q417 529 517 109T833 -617Q843 -631 843 -635Z"></path>
+<path stroke-width="10" id="E1-MJSZ4-239C" d="M413 -9Q412 -9 407 -9T388 -10T354 -10Q300 -10 297 -9Q294 -8 293 -5Q291 5 291 127V300Q291 602 292 605L296 609Q298 610 366 610Q382 610 392 610T407 610T412 609Q416 609 416 592T417 473V127Q417 -9 413 -9Z"></path>
+<path stroke-width="10" id="E1-MJSZ4-239E" d="M31 1143Q31 1154 49 1154H59Q72 1154 75 1152T89 1136Q190 1013 269 873T401 585T489 294T544 -8T572 -299T583 -583Q583 -634 583 -643T577 -654Q575 -655 508 -655Q465 -655 463 -654Q459 -653 458 -647T457 -609Q457 -58 371 340T100 1037Q87 1059 61 1098T31 1143Z"></path>
+<path stroke-width="10" id="E1-MJSZ4-23A0" d="M56 -644H50Q31 -644 31 -635Q31 -632 37 -622Q69 -579 100 -527Q286 -228 371 170T457 1119Q457 1161 462 1164Q464 1165 520 1165Q575 1165 577 1164Q582 1162 582 1153T583 1093Q581 910 570 752T527 400T442 40T300 -303T89 -626Q78 -640 75 -642T61 -644H56Z"></path>
+<path stroke-width="10" id="E1-MJSZ4-239F" d="M579 -9Q578 -9 573 -9T554 -10T520 -10Q466 -10 463 -9Q460 -8 459 -5Q457 5 457 127V300Q457 602 458 605L462 609Q464 610 532 610Q548 610 558 610T573 610T578 609Q582 609 582 592T583 473V127Q583 -9 579 -9Z"></path>
+</defs>
+<g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)">
+ <use xlink:href="#E1-MJMATHI-52" x="0" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E1-MJMATHI-78" x="1080" y="-213"></use>
+ <use xlink:href="#E1-MJMAIN-28" x="1272" y="0"></use>
+ <use xlink:href="#E1-MJMATHI-3B1" x="1666" y="0"></use>
+ <use xlink:href="#E1-MJMAIN-29" x="2311" y="0"></use>
+ <use xlink:href="#E1-MJMAIN-3D" x="2982" y="0"></use>
+<g transform="translate(4043,0)">
+<g transform="translate(0,2150)">
+ <use xlink:href="#E1-MJSZ4-239B" x="0" y="-1165"></use>
+<g transform="translate(0,-2013.104524180967) scale(1,0.37597503900156004)">
+ <use xlink:href="#E1-MJSZ4-239C"></use>
+</g>
+ <use xlink:href="#E1-MJSZ4-239D" x="0" y="-3146"></use>
+</g>
+<g transform="translate(1047,0)">
+<g transform="translate(-11,0)">
+ <use xlink:href="#E1-MJMAIN-31" x="0" y="1350"></use>
+ <use xlink:href="#E1-MJMAIN-30" x="0" y="-50"></use>
+ <use xlink:href="#E1-MJMAIN-30" x="0" y="-1450"></use>
+</g>
+<g transform="translate(1494,0)">
+ <use xlink:href="#E1-MJMAIN-30" x="829" y="1350"></use>
+<g transform="translate(0,-50)">
+ <use xlink:href="#E1-MJMAIN-63"></use>
+ <use xlink:href="#E1-MJMAIN-6F" x="449" y="0"></use>
+ <use xlink:href="#E1-MJMAIN-73" x="954" y="0"></use>
+ <use xlink:href="#E1-MJMATHI-3B1" x="1519" y="0"></use>
+</g>
+<g transform="translate(55,-1450)">
+ <use xlink:href="#E1-MJMAIN-73"></use>
+ <use xlink:href="#E1-MJMAIN-69" x="399" y="0"></use>
+ <use xlink:href="#E1-MJMAIN-6E" x="682" y="0"></use>
+ <use xlink:href="#E1-MJMATHI-3B1" x="1409" y="0"></use>
+</g>
+</g>
+<g transform="translate(4659,0)">
+ <use xlink:href="#E1-MJMAIN-30" x="1249" y="1350"></use>
+<g transform="translate(0,-50)">
+ <use xlink:href="#E1-MJMAIN-2212" x="0" y="0"></use>
+<g transform="translate(949,0)">
+ <use xlink:href="#E1-MJMAIN-73"></use>
+ <use xlink:href="#E1-MJMAIN-69" x="399" y="0"></use>
+ <use xlink:href="#E1-MJMAIN-6E" x="682" y="0"></use>
+</g>
+ <use xlink:href="#E1-MJMATHI-3B1" x="2359" y="0"></use>
+</g>
+<g transform="translate(419,-1450)">
+ <use xlink:href="#E1-MJMAIN-63"></use>
+ <use xlink:href="#E1-MJMAIN-6F" x="449" y="0"></use>
+ <use xlink:href="#E1-MJMAIN-73" x="954" y="0"></use>
+ <use xlink:href="#E1-MJMATHI-3B1" x="1519" y="0"></use>
+</g>
+</g>
+</g>
+<g transform="translate(8877,2150)">
+ <use xlink:href="#E1-MJSZ4-239E" x="0" y="-1164"></use>
+<g transform="translate(0,-2013.0717628705147) scale(1,0.37753510140405616)">
+ <use xlink:href="#E1-MJSZ4-239F"></use>
+</g>
+ <use xlink:href="#E1-MJSZ4-23A0" x="0" y="-3146"></use>
+</g>
+</g>
+</g>
+</svg>
+
+				<aside class="notes">
+					Kernfunktionen um die Daten zu untersuchen ist das Rotieren.
+					Eigentlich kann man nichts machen wenn man nicht rotieren könnte...
+					<b>Doch wie ist jetzt der Weg von meinen 3D Punkt bis er auf dem BIldschirm erscheint ? Also auf Code-Basis</b>
+				</aside>
+				</section>
+
+				<section data-transition="convex">
+					<pre><code class="hljs" data-trim contenteditable>
+var point = {x: 1, y: 2, z: 3};
+
+var angles = {x: Math.PI, y: Math.PI/2, z: 0};
+
+var options = {
+  origin: [480, 300],
+  scale = 20
+};
+					</code></pre>
+					<aside class="notes">
+						Ausgehend von den Variablen <br>
+						3d Punkt <br>
+						Winkel <br>
+						Ursprung <br>
+						Skalierung <br>
+					</aside>
+				</section>
+
+				<section data-transition="convex">
+					<pre><code class="hljs" data-trim contenteditable>
+var rz = rotateZ(po, angles.z);
+var ry = rotateY(rz, angles.y);
+var rx = rotateX(ry, angles.x);
+
+function rotateZ(){...}
+function rotateY(){...}
+function rotateX(){...}
+					</code></pre>
+					<aside class="notes">
+						...Punkt wird rotiert...
+					</aside>
+				</section>
+
+				<section data-transition="convex">
+					<pre><code class="hljs" data-trim contenteditable>
+function orthographic(d, options) {
+  return {
+    x: options.origin[0] + options.scale * d.x,
+    y: options.origin[1] + options.scale * d.y
+  };
+}
+					</code></pre>
+					<aside class="notes">
+						...Punkt wird projiziert auf die Ebene z = 0...
+					</aside>
+				</section>
+
+				<section data-transition="convex">
+					<pre><code class="hljs" data-trim contenteditable>
+var points3D = d3._3d()
+  .scale(100)
+  .x(function(d){ return d.x; })
+  .y(function(d){ return d.y; })
+  .z(function(d){ return d.z; })
+  .origin(origin)
+  .shape('POINT');
+
+projectedData = points3D(data);
+					</code></pre>
+					<aside class="notes">
+						Diese Funktionalitäte habe ich in ein Plugin "d3-3d" implementiert
+						das mit mit dieser Syntax
+					</aside>
+				</section>
+
+				<section data-transition="convex">
+					<a href="https://bl.ocks.org/Niekes">Beispiele</a>
+					<aside class="notes">
+						Alle Beispiele wurden vor dem Abgabedatum erstellt
+					</aside>
+				</section>
+
+
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+				history: true,
+				controls: false,
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+
+	</body>
+</html>
